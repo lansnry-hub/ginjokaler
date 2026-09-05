@@ -139,7 +139,7 @@
           brandNote: '一位带着神秘过去的可靠调酒师，<br>以饮品与节奏创作而闻名。',
           pageTitle: 'Ginjoplayer | 音乐空间', playerLabel: '播放器', libraryLabel: '曲库', nowPlaying: '正在播放', trackLibrary: '曲目库',
           browseText: '按类别浏览，点击曲目开始播放',
-          searchPlaceholder: '按曲名或歌手搜索...', allCategories: '全部大分类', japanese: '日文歌曲', international: '英文歌曲', allSubcategories: '全部小分类',
+          searchPlaceholder: '按曲名或歌手搜索...', allCategories: '全部大分类', japanese: '日文曲', international: '英文曲', allSubcategories: '全部小分类',
           favorites: '收藏', allStyles: '全部小分类', original: '原曲', cover: '演唱', originalLabel: '原曲', coverLabel: '演唱', originalMeta: '原曲', coverMeta: '演唱', thumbnailSuffix: '缩略图',
           back: '后退 10 秒', play: '播放', pause: '暂停', forward: '前进 10 秒', openVideo: '打开原视频', addFavorite: '加入收藏', removeFavorite: '取消收藏',
           chooseTrack: '请选择曲目', loading: '播放器正在加载，请稍候再按一次播放。', chooseFirst: '请先选择曲目', invalidId: '视频 ID 无效。',
@@ -515,7 +515,7 @@
 
       function localizedCategory(category) {
         if (currentLanguage === 'ja') return category;
-        return category === '邦楽' ? (currentLanguage === 'zh' ? '日语音乐' : 'Japanese') : (currentLanguage === 'zh' ? '国际音乐' : 'International');
+        return category === '邦楽' ? (currentLanguage === 'zh' ? '日文曲' : 'Japanese') : (currentLanguage === 'zh' ? '英文曲' : 'International');
       }
 
       populateSubCategories();
