@@ -185,11 +185,20 @@
         document.getElementById('playButton').setAttribute('title', t('play'));
         document.getElementById('forwardButton').setAttribute('aria-label', t('forward'));
         document.getElementById('forwardButton').setAttribute('title', t('forward'));
+        updateLanguageControls();
         updatePauseButton();
         updateFavoritesButton();
         populateSubCategories();
         renderCurrentSongs();
         if (selectedSong) updateNowPlaying(selectedSong);
+      }
+
+      function updateLanguageControls() {
+        const categorySelect = document.getElementById('categorySelect');
+        categorySelect.options[0].textContent = t('allCategories');
+        categorySelect.options[1].textContent = t('japanese');
+        categorySelect.options[2].textContent = t('international');
+        document.getElementById('searchInput').placeholder = t('searchPlaceholder');
       }
 
       document.querySelectorAll('[data-language]').forEach(button => {
@@ -338,7 +347,7 @@
       }
 
       function updatePauseButton() {
-        const isPlaying = player && window.YT && YT.PlayerState && player.getPlayerState() === YT.PlayerState.PLAYING;
+        const isPlaying = Boolean(player && typeof player.getPlayerState === 'function' && window.YT && YT.PlayerState && player.getPlayerState() === YT.PlayerState.PLAYING);
         setPlaybackButton(isPlaying);
       }
 
