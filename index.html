@@ -9,7 +9,10 @@
         body { margin: 0; min-height: 100vh; color: var(--ink); font-family: "Avenir Next", "Hiragino Kaku Gothic ProN", sans-serif; background: radial-gradient(circle at 75% 0%, #1e3a32 0, transparent 34%), var(--paper); }
         body::before { content: "🍸   ✦"; position: fixed; top: 18px; right: 5vw; z-index: -1; color: rgba(214,183,101,.14); font-size: 90px; letter-spacing: 20px; pointer-events: none; }
         .page-shell { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 30px 0 60px; }
-        .masthead { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding: 8px 0 30px; border-bottom: 1px solid var(--line); }
+        .masthead { position: relative; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding: 8px 0 30px; border-bottom: 1px solid var(--line); }
+        .language-switcher { position: absolute; top: -8px; right: 0; display: flex; gap: 4px; }
+        .language-button { width: 38px; height: 32px; padding: 0; color: var(--muted); border: 1px solid var(--accent); border-radius: 2px; background: transparent; cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; }
+        .language-button.is-active, .language-button:hover { color: var(--paper); background: var(--accent); }
         .eyebrow { margin: 0 0 8px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
         h1 { margin: 0; color: #edf3ee; font-family: Georgia, "Times New Roman", serif; font-size: clamp(34px, 5vw, 62px); font-weight: 400; letter-spacing: -.04em; line-height: calc(.95em + 3px); text-shadow: 0 2px 20px rgba(0,0,0,.4); }
         .brand-note { width: 280px; max-width: 100%; height: 88px; margin: 0; color: var(--muted); display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; font-size: 13px; line-height: 1.7; text-align: right; }
@@ -51,19 +54,19 @@
         .favorite-button { width: 32px; height: 32px; padding: 0; color: var(--accent-bright); border: 1px solid var(--line); border-radius: 50%; background: transparent; cursor: pointer; font-size: 19px; line-height: 1; }
         .favorite-button.is-favorite { color: #ef5350; border-color: #ef5350; }
         .video-link { color: var(--accent); font-size: 12px; white-space: nowrap; }
-        @media (max-width: 640px) { .page-shell { width: min(100% - 24px, 1120px); padding-top: 18px; } .masthead, .library-heading { display: block; } .brand-note { margin-top: 14px; align-items: flex-start; text-align: left; } .player-card { padding: 12px; } .art-strip { padding: 15px; } .song-item { align-items: flex-start; } .song-actions { flex-wrap: wrap; justify-content: flex-end; } }
+        @media (max-width: 640px) { .page-shell { width: min(100% - 24px, 1120px); padding-top: 18px; } .masthead, .library-heading { display: block; } .language-switcher { top: -4px; } .brand-note { margin-top: 14px; align-items: flex-start; text-align: left; } .player-card { padding: 12px; } .art-strip { padding: 15px; } .song-item { align-items: flex-start; } .song-actions { flex-wrap: wrap; justify-content: flex-end; } }
     </style>
 </head>
 <body>
 <main class="page-shell">
-  <header class="masthead"><div><p class="eyebrow">music room</p><h1>Zeal Ginjoka<br>音楽部屋</h1></div><p class="brand-note">A reliable Bartender with a shadowy past<br>renowned for his drink and beat-making skills.</p></header>
-  <section class="player-card" aria-label="播放器">
-    <div class="art-strip"><div><small>Now playing</small><strong id="currentTitle"></strong><span class="singer" id="currentSinger"></span><span class="original" id="currentOriginal"></span></div></div>
+  <header class="masthead"><div><p class="eyebrow" data-i18n="eyebrow">music room</p><h1><span data-i18n="brandName">Zeal Ginjoka</span><br><span data-i18n="roomName">音楽部屋</span></h1></div><p class="brand-note" data-i18n="brandNote">A reliable Bartender with a shadowy past<br>renowned for his drink and beat-making skills.</p><nav class="language-switcher" aria-label="Language"><button class="language-button is-active" type="button" data-language="ja">日</button><button class="language-button" type="button" data-language="zh">中</button><button class="language-button" type="button" data-language="en">EN</button></nav></header>
+  <section class="player-card" aria-label="播放器" data-i18n-attr="aria-label:playerLabel">
+    <div class="art-strip"><div><small data-i18n="nowPlaying">Now playing</small><strong id="currentTitle"></strong><span class="singer" id="currentSinger"></span><span class="original" id="currentOriginal"></span></div></div>
     <div class="player-frame"><div id="player"></div></div>
     <div class="player-controls"><button id="backButton" type="button" aria-label="10秒戻る" title="10秒戻る"><span class="control-icon" aria-hidden="true">↶</span></button><button id="playButton" type="button" aria-label="再生" title="再生"><span class="control-icon" aria-hidden="true">▶</span></button><button id="stopButton" type="button" aria-label="一時停止" title="一時停止"><span class="control-icon" aria-hidden="true">Ⅱ</span></button><button id="forwardButton" type="button" aria-label="10秒進む" title="10秒進む"><span class="control-icon" aria-hidden="true">↷</span></button></div>
     <div id="playerMessage" role="alert"></div>
   </section>
-  <section aria-label="曲库"><div class="library-heading"><h2>Track library</h2><p><span>Browse by Category. Tap to Play.</span><span>カテゴリから探す、曲名をタップして再生</span><span>按类别浏览，点击曲目开始播放</span></p></div><div class="controls"><input type="text" id="searchInput" placeholder="曲名や歌手名で検索..."><select id="categorySelect"><option value="ALL">すべての大区分</option><option value="邦楽">邦楽</option><option value="洋楽">洋楽</option></select><select id="subCategorySelect"><option value="ALL">すべての小区分</option></select><button id="favoritesToggle" class="favorites-toggle" type="button">♡ Favorites</button></div><div id="songList" class="song-list"></div></section>
+  <section aria-label="曲库" data-i18n-attr="aria-label:libraryLabel"><div class="library-heading"><h2 data-i18n="trackLibrary">Track library</h2><p><span data-i18n="browseText">カテゴリから探す、曲名をタップして再生</span></p></div><div class="controls"><input type="text" id="searchInput" data-i18n-attr="placeholder:searchPlaceholder" placeholder="曲名や歌手名で検索..."><select id="categorySelect"><option value="ALL" data-i18n="allCategories">すべての大区分</option><option value="邦楽" data-i18n="japanese">邦楽</option><option value="洋楽" data-i18n="international">洋楽</option></select><select id="subCategorySelect"><option value="ALL" data-i18n="allSubcategories">すべての小区分</option></select><button id="favoritesToggle" class="favorites-toggle" type="button">♡ Favorites</button></div><div id="songList" class="song-list"></div></section>
 </main>
 
     <script>
@@ -80,7 +83,7 @@
         { id: 'nyg_fW5ZDkw', title: '愛して愛して愛して', originalArtist: 'きくお', singer: 'Uki Violeta & Zeal ginjoka', startTime:1453 , endTime:1696 , category: '邦楽', subCategory: 'ボカロ' },
         { id: 'nyg_fW5ZDkw', title: 'モエチャッカファイア', originalArtist: '弐誠', singer: 'Ver Vermillion & Zeal ginjoka', startTime:1752 , endTime:1903 , category: '邦楽', subCategory: 'ボカロ' },
         { id: 'nyg_fW5ZDkw', title: 'ダーリンダンス', originalArtist: 'かいりきベア', singer: 'Petra Gurin & Zeal ginjoka', startTime:1972 , endTime:2168 , category: '邦楽', subCategory: 'ボカロ' },
-        { id: 'nyg_fW5ZDkw', title: '真夜中のドア〜stay with me〜', originalArtist: '松原みき', singer: 'Vantacrow Bringer & Zeal ginjoka', startTime:2262 , endTime:2569 , category: '邦楽', subCategory: 'ボカロ' },
+        { id: 'nyg_fW5ZDkw', title: '真夜中のドア〜stay with me〜', originalArtist: '松原みき', singer: 'Vantacrow Bringer & Zeal ginjoka', startTime:2262 , endTime:2569 , category: '邦楽', subCategory: 'J-POP' },
         { id: 'nyg_fW5ZDkw', title: 'ファンサ', originalArtist: 'mona（CV：夏川椎菜）', singer: 'Zeal ginjoka', startTime:2647 , endTime:2897 , category: '邦楽', subCategory: 'アニメソング' },
         { id: 'nyg_fW5ZDkw', title: 'BUTCHER VANITY', originalArtist: 'FLAVOR FOLEY', singer: 'Zeal ginjoka', startTime:2984 , endTime:3169 , category: '洋楽', subCategory: 'ボカロ' },
         { id: 'F0C5eWLLdlg', title: 'Medusa\'s Masquerade', originalArtist: 'Zeal Ginjoka', singer: 'Zeal ginjoka', category: '洋楽', subCategory: 'ORIGINAL' },
@@ -91,7 +94,23 @@
         { id: 'zyngx4g-sy4', title: 'drop pop candy', originalArtist: 'れをる', singer: 'Kaelix Debonair & Zeal ginjoka', startTime:2180 , endTime:2405 , category: '邦楽', subCategory: 'ボカロ' },
         { id: 'zyngx4g-sy4', title: 'ハッピーシンセサイゼ', originalArtist: 'EasyPop', singer: 'Claude Clawmark & Zeal ginjoka', startTime:2835 , endTime:3065 , category: '邦楽', subCategory: 'ボカロ' },
         { id: 'zyngx4g-sy4', title: 'カンタレラ', originalArtist: '黒うさ', singer: 'Kaelix Debonair & Zeal ginjoka', startTime:3738 , endTime:3915 , category: '邦楽', subCategory: 'ボカロ' },
-        { id: 'zyngx4g-sy4', title: 'プラスティック・ラブ', originalArtist: '竹内まりや', singer: 'Claude Clawmark & Kaelix Debonair & Zeal ginjoka', startTime:4052 , endTime:4341 , category: '邦楽', subCategory: 'J-POP' }
+        { id: 'zyngx4g-sy4', title: 'プラスティック・ラブ', originalArtist: '竹内まりや', singer: 'Claude Clawmark & Kaelix Debonair & Zeal ginjoka', startTime:4052 , endTime:4341 , category: '邦楽', subCategory: 'J-POP' },
+        { id: '5TAIqQ7hHTY', title: '真夜中のドア〜stay with me〜', originalArtist: '松原みき', singer: 'Shu Yamino & Uki Violeta & Claude Clawmark & Zeal ginjoka', startTime:321 , endTime:593 , category: '邦楽', subCategory: 'J-POP' },
+        { id: '5TAIqQ7hHTY', title: 'エンヴィーベイビー', originalArtist: 'Kanaria', singer: 'Claude Clawmark & Zeal ginjoka', startTime:1528 , endTime:1659 , category: '邦楽', subCategory: 'ボカロ' },
+        { id: '5TAIqQ7hHTY', title: 'ローリンガール', originalArtist: 'wowaka', singer: 'Shu Yamino & Uki Violeta & Claude Clawmark & Zeal ginjoka', startTime:1752 , endTime:1940 , category: '邦楽', subCategory: 'ボカロ' },
+        { id: '5TAIqQ7hHTY', title: 'モエチャッカファイア', originalArtist: '弐誠', singer: 'Shu Yamino & Claude Clawmark & Zeal ginjoka', startTime:2023 , endTime:2177 , category: '邦楽', subCategory: 'ボカロ' },
+        { id: '5TAIqQ7hHTY', title: '-ERROR', originalArtist: 'niki', singer: 'Zeal ginjoka & Shu Yamino & Uki Violeta & Claude Clawmark', startTime:2781 , endTime:3008 , category: '邦楽', subCategory: 'ボカロ' },
+        { id: '5TAIqQ7hHTY', title: 'ラッキー⭐︎オーブ', originalArtist: 'emon(Tes.)', singer: 'Zeal ginjoka', startTime:3989 , endTime:4200 , category: '邦楽', subCategory: 'ボカロ' },
+        { id: '5TAIqQ7hHTY', title: 'BUTCHER VANITY', originalArtist: 'FLAVOR FOLEY', singer: 'Shu Yamino & UkiVioleta & Claude Clawmark & Zeal ginjoka', startTime:4892 , endTime:5080 , category: '洋楽', subCategory: 'ボカロ' },
+        { id: '5TAIqQ7hHTY', title: 'フォニイ', originalArtist: 'ツミキ', singer: 'Shu Yamino & Uki Violeta & Claude Clawmark & Zeal ginjoka', startTime:5293 , endTime:5483 , category: '邦楽', subCategory: 'ボカロ' },
+        { id: 'rklAmQErXgk', title: 'Diamond Coty Lights', originalArtist: 'LazuLight', singer: 'Zeal ginjoka', startTime:330 , endTime:569 , category: '洋楽', subCategory: 'POP' },
+        { id: 'rklAmQErXgk', title: 'Sugary,Spooky', originalArtist: 'Denauth', singer: 'Zeal ginjoka', startTime:702 , endTime:912 , category: '洋楽', subCategory: 'POP' },
+        { id: 'rklAmQErXgk', title: 'Deja Vu', originalArtist:'Uki Violeta', singer: 'Zeal ginjoka', startTime:1002 , endTime:1280 , category: '洋楽', subCategory: 'POP' },
+        { id: 'WSLjn3L3I4k', title: '死神', originalArtist: '米津玄師', singer: 'Zeal ginjoka', startTime:378 , endTime:558 , category: '邦楽', subCategory: 'J-POP' },
+        { id: 'WSLjn3L3I4k', title: 'サリシノハラ', originalArtist: 'みきとP', singer: 'Zeal ginjoka', startTime:700 , endTime:964 , category: '邦楽', subCategory: 'ボカロ' },
+        { id: 'WSLjn3L3I4k', title: '晩餐歌', originalArtist: 'tuki.', singer: 'Zeal ginjoka', startTime:1084 , endTime:1298 , category: '邦楽」', subCategory: 'J-POP' },
+        { id: 'WSLjn3L3I4k', title: 'ひらむきシンデレラ！', originalArtist: 'CUTIE STREET', singer: 'Zeal ginjoka', startTime:1448 , endTime:1670 , category: '邦楽', subCategory: 'J-POP' },
+        { id: 'WSLjn3L3I4k', title: 'カンタレラ', originalArtist: '黒うさP', singer: 'Zeal ginjoka', startTime:1803 , endTime:1978 , category: '邦楽', subCategory: 'J-POP' },
 
       ];
 
@@ -99,8 +118,83 @@
       // 2. 大区分ごとの小区分リスト
       const subCategories = {
         '邦楽': ['J-POP', 'アニメソング','ボカロ'],
-        '洋楽': ['VOCALOID','ORIGINAL'],
+        '洋楽': ['VOCALOID','ORIGINAL','POP'],
       };
+
+      const translations = {
+        ja: {
+          eyebrow: 'music room', brandName: 'Zeal Ginjoka', roomName: '音楽部屋',
+          brandNote: 'A reliable Bartender with a shadowy past<br>renowned for his drink and beat-making skills.',
+          pageTitle: 'Ginjoplayer | Music Room', playerLabel: 'プレーヤー', libraryLabel: '曲一覧', nowPlaying: 'Now playing', trackLibrary: 'Track library',
+          browseText: 'カテゴリから探す、曲名をタップして再生',
+          searchPlaceholder: '曲名や歌手名で検索...', allCategories: 'すべての大区分', japanese: '邦楽', international: '洋楽', allSubcategories: 'すべての小区分',
+          favorites: 'Favorites', allStyles: 'すべての小区分', original: '原曲', cover: '歌唱', originalLabel: 'Original', coverLabel: 'Cover', originalMeta: '原曲', coverMeta: '歌唱', thumbnailSuffix: 'のサムネイル',
+          back: '10秒戻る', play: '再生', pause: '一時停止', forward: '10秒進む', openVideo: '元動画', addFavorite: 'お気に入りに追加', removeFavorite: 'お気に入りから削除',
+          chooseTrack: '曲を選択してください', loading: '播放器正在加载，请稍候再按一次播放。', chooseFirst: '曲を選択してください', invalidId: '動画IDが正しくありません。',
+          playerError: '動画を再生できません。YouTube側の制限を確認してください。', htmlError: 'HTML5プレーヤーで再生できません。',
+          deleted: '動画が削除されたか、非公開になっています。', embedError: 'この動画は埋め込み再生が許可されていません。', fileError: '直接打开本地文件无法播放 YouTube，请通过 http://127.0.0.1:8000/index.html 访问。'
+        },
+        zh: {
+          eyebrow: '音乐空间', brandName: 'Zeal Ginjoka', roomName: '音乐室',
+          brandNote: '一位带着神秘过去的可靠调酒师，<br>以饮品与节奏创作而闻名。',
+          pageTitle: 'Ginjoplayer | 音乐空间', playerLabel: '播放器', libraryLabel: '曲库', nowPlaying: '正在播放', trackLibrary: '曲目库',
+          browseText: '按类别浏览，点击曲目开始播放',
+          searchPlaceholder: '按曲名或歌手搜索...', allCategories: '全部大分类', japanese: '日语音乐', international: '国际音乐', allSubcategories: '全部小分类',
+          favorites: '收藏', allStyles: '全部小分类', original: '原曲', cover: '演唱', originalLabel: '原曲作者', coverLabel: '演唱者', originalMeta: '原曲', coverMeta: '演唱', thumbnailSuffix: '缩略图',
+          back: '后退 10 秒', play: '播放', pause: '暂停', forward: '前进 10 秒', openVideo: '打开原视频', addFavorite: '加入收藏', removeFavorite: '取消收藏',
+          chooseTrack: '请选择曲目', loading: '播放器正在加载，请稍候再按一次播放。', chooseFirst: '请先选择曲目', invalidId: '视频 ID 无效。',
+          playerError: '视频无法播放，请检查 YouTube 限制。', htmlError: 'HTML5 播放器无法播放此视频。', deleted: '视频已删除或设为私密。', embedError: '此视频不允许嵌入播放。', fileError: '直接打开本地文件无法播放 YouTube，请通过 http://127.0.0.1:8000/index.html 访问。'
+        },
+        en: {
+          eyebrow: 'music room', brandName: 'Zeal Ginjoka', roomName: 'Music Room',
+          brandNote: 'A reliable bartender with a shadowy past,<br>renowned for drinks and beat-making.',
+          pageTitle: 'Ginjoplayer | Music Room', playerLabel: 'Music player', libraryLabel: 'Track library', nowPlaying: 'Now playing', trackLibrary: 'Track library',
+          browseText: 'Browse by Category. Tap to Play.',
+          searchPlaceholder: 'Search by title or artist...', allCategories: 'All categories', japanese: 'Japanese', international: 'International', allSubcategories: 'All styles',
+          favorites: 'Favorites', allStyles: 'All styles', original: 'Original', cover: 'Cover', originalLabel: 'Original', coverLabel: 'Cover',
+          back: 'Back 10 seconds', play: 'Play', pause: 'Pause', forward: 'Forward 10 seconds', openVideo: 'Open source video', addFavorite: 'Add to favorites', removeFavorite: 'Remove from favorites',
+          chooseTrack: 'Choose a track', loading: 'The player is loading. Please try again shortly.', chooseFirst: 'Please choose a track first.', invalidId: 'The video ID is invalid.',
+          playerError: 'The video could not be played. Check YouTube restrictions.', htmlError: 'The HTML5 player could not play this video.', deleted: 'This video was deleted or made private.', embedError: 'This video does not allow embedded playback.', fileError: 'YouTube cannot play from a local file. Open http://127.0.0.1:8000/index.html.', originalMeta: 'Original', coverMeta: 'Cover', thumbnailSuffix: 'thumbnail'
+        }
+      };
+      var currentLanguage = 'ja';
+
+      function t(key) {
+        return translations[currentLanguage][key] || translations.ja[key] || key;
+      }
+
+      function applyLanguage(language) {
+        currentLanguage = language;
+        document.documentElement.lang = language === 'zh' ? 'zh-CN' : language;
+        document.title = t('pageTitle');
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+          element.innerHTML = t(element.dataset.i18n);
+        });
+        document.querySelectorAll('[data-i18n-attr]').forEach(element => {
+          element.dataset.i18nAttr.split(',').forEach(pair => {
+            const [attribute, key] = pair.split(':');
+            element.setAttribute(attribute, t(key));
+          });
+        });
+        document.querySelectorAll('[data-language]').forEach(button => {
+          button.classList.toggle('is-active', button.dataset.language === language);
+        });
+        document.getElementById('backButton').setAttribute('aria-label', t('back'));
+        document.getElementById('backButton').setAttribute('title', t('back'));
+        document.getElementById('playButton').setAttribute('aria-label', t('play'));
+        document.getElementById('playButton').setAttribute('title', t('play'));
+        document.getElementById('forwardButton').setAttribute('aria-label', t('forward'));
+        document.getElementById('forwardButton').setAttribute('title', t('forward'));
+        updatePauseButton();
+        updateFavoritesButton();
+        populateSubCategories();
+        renderCurrentSongs();
+        if (selectedSong) updateNowPlaying(selectedSong);
+      }
+
+      document.querySelectorAll('[data-language]').forEach(button => {
+        button.addEventListener('click', () => applyLanguage(button.dataset.language));
+      });
 
       // 3. YouTube APIの準備
       var tag = document.createElement('script');
@@ -139,8 +233,8 @@
 
       function updateNowPlaying(song) {
         document.getElementById('currentTitle').textContent = song.title;
-        document.getElementById('currentSinger').textContent = `Cover · ${song.singer}`;
-        document.getElementById('currentOriginal').textContent = `Original · ${song.originalArtist}`;
+        document.getElementById('currentSinger').textContent = `${t('coverLabel')} · ${song.singer}`;
+        document.getElementById('currentOriginal').textContent = `${t('originalLabel')} · ${song.originalArtist}`;
       }
 
       function songKey(song) {
@@ -162,6 +256,11 @@
         renderCurrentSongs();
       }
 
+      function updateFavoritesButton() {
+        const button = document.getElementById('favoritesToggle');
+        button.textContent = `${favoritesOnly ? '♥' : '♡'} ${t('favorites')}`;
+      }
+
       function playSong(song) {
         selectedSong = song;
         pendingSong = song;
@@ -169,11 +268,11 @@
         renderCurrentSongs();
         document.getElementById('playerMessage').textContent = '';
         if (!/^[A-Za-z0-9_-]{11}$/.test(song.id)) {
-          document.getElementById('playerMessage').textContent = '動画IDが正しくありません（11文字のYouTube動画IDを設定してください）。';
+          document.getElementById('playerMessage').textContent = t('invalidId');
           return;
         }
         if (!playerReady || !player || !player.loadVideoById) {
-          document.getElementById('playerMessage').textContent = '播放器正在加载，准备好后会自动切换到这首歌。';
+          document.getElementById('playerMessage').textContent = t('loading');
           return;
         }
         loadSong(song, true);
@@ -207,12 +306,12 @@
 
       function resumeSong() {
         if (!selectedSong) {
-          document.getElementById('playerMessage').textContent = 'Please choose a track first.';
+          document.getElementById('playerMessage').textContent = t('chooseFirst');
           return;
         }
         if (!playerReady || !player || !player.playVideo) {
           pendingSong = selectedSong;
-          document.getElementById('playerMessage').textContent = '播放器正在加载，请稍候再按一次播放。';
+          document.getElementById('playerMessage').textContent = t('loading');
           return;
         }
         if (player && player.playVideo) {
@@ -233,9 +332,14 @@
       function setPlaybackButton(isPlaying) {
         const button = document.getElementById('stopButton');
         const icon = button.querySelector('.control-icon');
-        button.setAttribute('aria-label', isPlaying ? '一時停止' : '再生');
-        button.setAttribute('title', isPlaying ? '一時停止' : '再生');
+        button.setAttribute('aria-label', isPlaying ? t('pause') : t('play'));
+        button.setAttribute('title', isPlaying ? t('pause') : t('play'));
         icon.textContent = isPlaying ? 'Ⅱ' : '▶';
+      }
+
+      function updatePauseButton() {
+        const isPlaying = player && window.YT && YT.PlayerState && player.getPlayerState() === YT.PlayerState.PLAYING;
+        setPlaybackButton(isPlaying);
       }
 
       function pauseSong() {
@@ -262,14 +366,14 @@
 
       function showPlayerError(event) {
         const messages = {
-          2: '動画IDが正しくありません。',
-          5: 'HTML5プレーヤーで再生できません。',
-          100: '動画が削除されたか、非公開になっています。',
-          101: 'この動画は埋め込み再生が許可されていません。',
-          150: 'この動画は埋め込み再生が許可されていません。',
-          153: '直接打开本地文件无法播放 YouTube，请通过 http://127.0.0.1:8000/index.html 访问。'
+          2: t('invalidId'),
+          5: t('htmlError'),
+          100: t('deleted'),
+          101: t('embedError'),
+          150: t('embedError'),
+          153: t('fileError')
         };
-        document.getElementById('playerMessage').textContent = messages[event.data] || '動画を再生できません。YouTube側の制限を確認してください。';
+        document.getElementById('playerMessage').textContent = messages[event.data] || t('playerError');
       }
 
       // 5. 画面に曲一覧を表示する処理
@@ -286,18 +390,18 @@
           const isFavorite = favoriteKeys.has(songKey(song));
           item.innerHTML = `
             <div class="song-main">
-              <img class="song-thumbnail" src="https://img.youtube.com/vi/${song.id}/mqdefault.jpg" alt="${song.title}のサムネイル" loading="lazy">
+              <img class="song-thumbnail" src="https://img.youtube.com/vi/${song.id}/mqdefault.jpg" alt="${song.title} ${t('thumbnailSuffix')}" loading="lazy">
               <div class="song-details">
                 <div class="song-title">${song.title}</div>
-                <div class="song-meta">原曲：${song.originalArtist}</div>
-                <div class="song-meta">歌唱：${song.singer}</div>
+                <div class="song-meta">${t('originalMeta')}: ${song.originalArtist}</div>
+                <div class="song-meta">${t('coverMeta')}: ${song.singer}</div>
               </div>
             </div>
             <div class="song-actions">
-              <span class="badge">${song.category}</span>
-              <span class="badge">${song.subCategory}</span>
-              <button class="favorite-button${isFavorite ? ' is-favorite' : ''}" type="button" aria-label="${isFavorite ? 'Remove from favorites' : 'Add to favorites'}" title="${isFavorite ? 'Remove from favorites' : 'Add to favorites'}">${isFavorite ? '♥' : '♡'}</button>
-              <a class="video-link" href="https://www.youtube.com/watch?v=${song.id}" target="_blank" rel="noopener" aria-label="${song.title}の元動画をYouTubeで開く">元動画</a>
+              <span class="badge">${localizedCategory(song.category)}</span>
+              <span class="badge">${localizedSubCategory(song.subCategory)}</span>
+              <button class="favorite-button${isFavorite ? ' is-favorite' : ''}" type="button" aria-label="${isFavorite ? t('removeFavorite') : t('addFavorite')}" title="${isFavorite ? t('removeFavorite') : t('addFavorite')}">${isFavorite ? '♥' : '♡'}</button>
+              <a class="video-link" href="https://www.youtube.com/watch?v=${song.id}" target="_blank" rel="noopener" aria-label="${song.title} ${t('openVideo')}">${t('openVideo')}</a>
             </div>
           `;
           item.onclick = () => playSong(song);
@@ -335,20 +439,20 @@
         const selectedCategory = this.value;
         const subSelect = document.getElementById('subCategorySelect');
         
-        subSelect.innerHTML = '<option value="ALL">すべての小区分</option>';
+        subSelect.innerHTML = `<option value="ALL">${t('allStyles')}</option>`;
 
         if (subCategories[selectedCategory]) {
           subCategories[selectedCategory].forEach(sub => {
             const option = document.createElement('option');
             option.value = sub;
-            option.textContent = sub;
+            option.textContent = localizedSubCategory(sub);
             subSelect.appendChild(option);
           });
         } else {
           [...new Set(Object.values(subCategories).flat())].forEach(sub => {
             const option = document.createElement('option');
             option.value = sub;
-            option.textContent = sub;
+            option.textContent = localizedSubCategory(sub);
             subSelect.appendChild(option);
           });
         }
@@ -372,24 +476,42 @@
       document.getElementById('favoritesToggle').addEventListener('click', event => {
         favoritesOnly = !favoritesOnly;
         event.currentTarget.classList.toggle('is-active', favoritesOnly);
-        event.currentTarget.textContent = favoritesOnly ? '♥ Favorites' : '♡ Favorites';
+        updateFavoritesButton();
         renderCurrentSongs();
       });
 
       function populateSubCategories() {
         const subSelect = document.getElementById('subCategorySelect');
         const allStyles = [...new Set(Object.values(subCategories).flat())];
-        subSelect.innerHTML = '<option value="ALL">すべての小区分</option>';
+        subSelect.innerHTML = `<option value="ALL">${t('allStyles')}</option>`;
         allStyles.forEach(sub => {
           const option = document.createElement('option');
           option.value = sub;
-          option.textContent = sub;
+          option.textContent = localizedSubCategory(sub);
           subSelect.appendChild(option);
         });
       }
 
+      function localizedSubCategory(subCategory) {
+        const labels = {
+          'J-POP': { zh: 'J-Pop', en: 'J-Pop' },
+          'アニメソング': { zh: '动漫歌曲', en: 'Anime' },
+          'ボカロ': { zh: 'Vocaloid', en: 'Vocaloid' },
+          'VOCALOID': { zh: 'Vocaloid', en: 'Vocaloid' },
+          'ORIGINAL': { zh: '原创', en: 'Original' },
+          'POP': { zh: '流行', en: 'Pop' }
+        };
+        return currentLanguage === 'ja' ? subCategory : (labels[subCategory]?.[currentLanguage] || subCategory);
+      }
+
+      function localizedCategory(category) {
+        if (currentLanguage === 'ja') return category;
+        return category === '邦楽' ? (currentLanguage === 'zh' ? '日语音乐' : 'Japanese') : (currentLanguage === 'zh' ? '国际音乐' : 'International');
+      }
+
       populateSubCategories();
       renderCurrentSongs();
+      applyLanguage('ja');
     </script>
 </body>
 </html>
