@@ -4,26 +4,27 @@
     <meta charset="UTF-8">
     <title>Ginjoplayer | Music Room</title>
     <style>
-        :root { --ink: #1f2933; --muted: #6c777d; --paper: #f7f3ed; --card: #fffdf9; --accent: #c6533c; --line: #e6ddd2; --custom-image: none; }
+        :root { --ink: #dbe6df; --muted: #93a49a; --paper: #0d1715; --card: #13231f; --accent: #b99343; --accent-bright: #d6b765; --line: #2f5148; --custom-image: none; }
         * { box-sizing: border-box; }
-        body { margin: 0; min-height: 100vh; color: var(--ink); font-family: "Avenir Next", "Hiragino Kaku Gothic ProN", sans-serif; background: var(--paper); }
-        body::before { content: ""; position: fixed; inset: 0; z-index: -1; opacity: .45; pointer-events: none; background-image: radial-gradient(#d7c8b8 1px, transparent 1px); background-size: 18px 18px; }
+        body { margin: 0; min-height: 100vh; color: var(--ink); font-family: "Avenir Next", "Hiragino Kaku Gothic ProN", sans-serif; background: radial-gradient(circle at 75% 0%, #1e3a32 0, transparent 34%), var(--paper); }
+        body::before { content: "✦   🍸   ✦"; position: fixed; top: 18px; right: 5vw; z-index: -1; color: rgba(214,183,101,.14); font-size: 90px; letter-spacing: 20px; pointer-events: none; }
         .page-shell { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 30px 0 60px; }
         .masthead { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding: 8px 0 30px; border-bottom: 1px solid var(--line); }
         .eyebrow { margin: 0 0 8px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
-        h1 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(34px, 5vw, 62px); font-weight: 400; letter-spacing: -.04em; line-height: .95; }
+        h1 { margin: 0; color: #edf3ee; font-family: Georgia, "Times New Roman", serif; font-size: clamp(34px, 5vw, 62px); font-weight: 400; letter-spacing: -.04em; line-height: .95; text-shadow: 0 2px 20px rgba(0,0,0,.4); }
         .brand-note { width: 280px; max-width: 100%; height: 88px; margin: 0; color: var(--muted); display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; font-size: 13px; line-height: 1.7; text-align: right; }
-        .player-card { overflow: hidden; padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: var(--card); box-shadow: 0 18px 45px rgba(74, 54, 38, .09); }
-        .art-strip { min-height: 104px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; color: white; background: linear-gradient(105deg, rgba(31, 41, 51, .95), rgba(117, 54, 43, .88)), var(--custom-image); background-size: cover; background-position: center; border-radius: 11px; }
+        .player-card { overflow: hidden; padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg, rgba(24,48,41,.96), rgba(10,22,19,.96)); box-shadow: 0 18px 45px rgba(0,0,0,.28), inset 0 1px rgba(214,183,101,.18); }
+        .art-strip { min-height: 104px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; color: white; background: linear-gradient(105deg, rgba(9,24,20,.96), rgba(42,73,59,.9)), var(--custom-image); background-size: cover; background-position: center; border: 1px solid rgba(214,183,101,.3); border-radius: 11px; }
         .art-strip strong { display: block; margin: 3px 0 2px; overflow: hidden; font-family: Georgia, "Times New Roman", serif; font-size: 29px; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; }
         .art-strip small { color: rgba(255,255,255,.7); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
-        .art-strip .singer { color: rgba(255,255,255,.72); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+        .art-strip .singer, .art-strip .original { display: block; color: rgba(255,255,255,.72); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+        .art-strip .original { margin-top: 3px; }
         .player-frame { width: min(100%, 720px); aspect-ratio: 16 / 9; margin: 22px auto 0; overflow: hidden; background: #111820; border-radius: 10px; }
         #player, #player iframe { display: block; width: 100%; height: 100%; }
         .player-controls { display: flex; justify-content: center; gap: 9px; margin-top: 17px; align-items: center; flex-wrap: wrap; }
-        .player-controls button { width: 48px; height: 42px; padding: 0; color: var(--ink); border: 1px solid var(--line); border-radius: 99px; background: transparent; cursor: pointer; font: inherit; transition: .2s ease; }
+        .player-controls button { width: 48px; height: 42px; padding: 0; color: var(--ink); border: 1px solid var(--line); border-radius: 99px; background: rgba(7,18,15,.55); cursor: pointer; font: inherit; transition: .2s ease; }
         .player-controls .control-icon { display: inline-block; font-size: 20px; line-height: 1; }
-        .player-controls #playButton { width: 58px; color: white; border-color: var(--accent); background: var(--accent); }
+        .player-controls #playButton { width: 58px; color: #101b17; border-color: var(--accent-bright); background: var(--accent-bright); }
         .player-controls #playButton:hover { color: white; border-color: var(--ink); background: var(--ink); }
         .player-controls button:hover { color: white; border-color: var(--accent); background: var(--accent); }
         #playerMessage { min-height: 20px; margin: 10px 0 0; color: #b23d32; font-size: 13px; text-align: center; }
@@ -31,19 +32,24 @@
         .library-heading h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 31px; font-weight: 400; }
         .library-heading p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.45; letter-spacing: .02em; text-align: justify; text-align-last: justify; }
         .library-heading p span { display: block; }
-        .controls { display: flex; gap: 10px; flex-wrap: wrap; }
-        input, select { min-height: 42px; padding: 8px 12px; color: var(--ink); border: 1px solid var(--line); border-radius: 7px; background: rgba(255,253,249,.8); font: inherit; }
+        .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        input, select { min-height: 42px; padding: 8px 12px; color: var(--ink); border: 1px solid var(--line); border-radius: 7px; background: rgba(17,38,32,.9); font: inherit; }
+        .favorites-toggle { min-height: 42px; padding: 8px 14px; color: var(--accent-bright); border: 1px solid var(--accent); border-radius: 7px; background: transparent; cursor: pointer; font: inherit; }
+        .favorites-toggle.is-active { color: #17211d; background: var(--accent-bright); }
         #searchInput { flex: 1 1 240px; }
         .song-list { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
-        .song-item { padding: 12px; border: 1px solid transparent; border-radius: 10px; background: rgba(255,253,249,.68); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; transition: .2s ease; }
-        .song-item:hover { border-color: var(--line); background: var(--card); transform: translateY(-1px); }
+        .song-item { padding: 12px; border: 1px solid transparent; border-radius: 10px; background: rgba(19,35,31,.76); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; transition: .2s ease; }
+        .song-item:hover { border-color: var(--accent); background: #1a332b; transform: translateY(-1px); }
+        .song-item.is-playing { border-color: var(--accent-bright); background: linear-gradient(90deg, rgba(91,111,55,.42), rgba(31,65,51,.95)); box-shadow: inset 4px 0 var(--accent-bright); }
         .song-main { display: flex; align-items: center; min-width: 0; }
         .song-title { font-weight: bold; }
         .song-meta { color: var(--muted); font-size: 12px; }
-        .badge { padding: 4px 8px; color: var(--accent); border: 1px solid #e8b7ab; border-radius: 99px; font-size: 11px; white-space: nowrap; }
+        .badge { padding: 4px 8px; color: var(--accent-bright); border: 1px solid var(--accent); border-radius: 99px; font-size: 11px; white-space: nowrap; }
         .song-thumbnail { width: 88px; height: 56px; object-fit: cover; margin-right: 12px; border-radius: 6px; flex-shrink: 0; }
         .song-details { min-width: 0; }
         .song-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+        .favorite-button { width: 32px; height: 32px; padding: 0; color: var(--accent-bright); border: 1px solid var(--line); border-radius: 50%; background: transparent; cursor: pointer; font-size: 19px; line-height: 1; }
+        .favorite-button.is-favorite { color: #ef5350; border-color: #ef5350; }
         .video-link { color: var(--accent); font-size: 12px; white-space: nowrap; }
         @media (max-width: 640px) { .page-shell { width: min(100% - 24px, 1120px); padding-top: 18px; } .masthead, .library-heading { display: block; } .brand-note { margin-top: 14px; align-items: flex-start; text-align: left; } .player-card { padding: 12px; } .art-strip { padding: 15px; } .song-item { align-items: flex-start; } .song-actions { flex-wrap: wrap; justify-content: flex-end; } }
     </style>
@@ -52,12 +58,12 @@
 <main class="page-shell">
   <header class="masthead"><div><p class="eyebrow">music room</p><h1>Zeal Ginjoka<br>音楽部屋</h1></div><p class="brand-note">A reliable Bartender with a shadowy past<br>renowned for his drink and beat-making skills.</p></header>
   <section class="player-card" aria-label="播放器">
-    <div class="art-strip"><div><small>Now playing</small><strong id="currentTitle"></strong><span class="singer" id="currentSinger"></span></div><span>✦</span></div>
+    <div class="art-strip"><div><small>Now playing</small><strong id="currentTitle"></strong><span class="singer" id="currentSinger"></span><span class="original" id="currentOriginal"></span></div></div>
     <div class="player-frame"><div id="player"></div></div>
     <div class="player-controls"><button id="backButton" type="button" aria-label="10秒戻る" title="10秒戻る"><span class="control-icon" aria-hidden="true">↶</span></button><button id="playButton" type="button" aria-label="再生" title="再生"><span class="control-icon" aria-hidden="true">▶</span></button><button id="stopButton" type="button" aria-label="一時停止" title="一時停止"><span class="control-icon" aria-hidden="true">Ⅱ</span></button><button id="forwardButton" type="button" aria-label="10秒進む" title="10秒進む"><span class="control-icon" aria-hidden="true">↷</span></button></div>
     <div id="playerMessage" role="alert"></div>
   </section>
-  <section aria-label="曲库"><div class="library-heading"><h2>Track library</h2><p><span>Browse by Category. Tap to Play.</span><span>カテゴリから探す、曲名をタップして再生</span><span>按类别浏览，点击曲目开始播放</span></p></div><div class="controls"><input type="text" id="searchInput" placeholder="曲名や歌手名で検索..."><select id="categorySelect"><option value="ALL">すべての大区分</option><option value="邦楽">邦楽</option><option value="洋楽">洋楽</option></select><select id="subCategorySelect"><option value="ALL">すべての小区分</option></select></div><div id="songList" class="song-list"></div></section>
+  <section aria-label="曲库"><div class="library-heading"><h2>Track library</h2><p><span>Browse by Category. Tap to Play.</span><span>カテゴリから探す、曲名をタップして再生</span><span>按类别浏览，点击曲目开始播放</span></p></div><div class="controls"><input type="text" id="searchInput" placeholder="曲名や歌手名で検索..."><select id="categorySelect"><option value="ALL">すべての大区分</option><option value="邦楽">邦楽</option><option value="洋楽">洋楽</option></select><select id="subCategorySelect"><option value="ALL">すべての小区分</option></select><button id="favoritesToggle" class="favorites-toggle" type="button">♡ Favorites</button></div><div id="songList" class="song-list"></div></section>
 </main>
 
     <script>
@@ -107,6 +113,8 @@
       var pendingSong = null;
       var selectedSong = null;
       var playbackTimer;
+      var favoritesOnly = false;
+      var favoriteKeys = new Set(JSON.parse(localStorage.getItem('ginjoplayer-favorites') || '[]'));
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '100%',
@@ -131,13 +139,34 @@
 
       function updateNowPlaying(song) {
         document.getElementById('currentTitle').textContent = song.title;
-        document.getElementById('currentSinger').textContent = `Singer · ${song.singer}`;
+        document.getElementById('currentSinger').textContent = `Cover · ${song.singer}`;
+        document.getElementById('currentOriginal').textContent = `Original · ${song.originalArtist}`;
+      }
+
+      function songKey(song) {
+        return [song.id, song.startTime || 0, song.endTime || '', song.title].join('|');
+      }
+
+      function saveFavorites() {
+        localStorage.setItem('ginjoplayer-favorites', JSON.stringify([...favoriteKeys]));
+      }
+
+      function toggleFavorite(song) {
+        const key = songKey(song);
+        if (favoriteKeys.has(key)) {
+          favoriteKeys.delete(key);
+        } else {
+          favoriteKeys.add(key);
+        }
+        saveFavorites();
+        renderCurrentSongs();
       }
 
       function playSong(song) {
         selectedSong = song;
         pendingSong = song;
         updateNowPlaying(song);
+        renderCurrentSongs();
         document.getElementById('playerMessage').textContent = '';
         if (!/^[A-Za-z0-9_-]{11}$/.test(song.id)) {
           document.getElementById('playerMessage').textContent = '動画IDが正しくありません（11文字のYouTube動画IDを設定してください）。';
@@ -251,6 +280,10 @@
         songArray.forEach(song => {
           const item = document.createElement('div');
           item.className = 'song-item';
+          if (selectedSong && songKey(selectedSong) === songKey(song)) {
+            item.classList.add('is-playing');
+          }
+          const isFavorite = favoriteKeys.has(songKey(song));
           item.innerHTML = `
             <div class="song-main">
               <img class="song-thumbnail" src="https://img.youtube.com/vi/${song.id}/mqdefault.jpg" alt="${song.title}のサムネイル" loading="lazy">
@@ -263,33 +296,38 @@
             <div class="song-actions">
               <span class="badge">${song.category}</span>
               <span class="badge">${song.subCategory}</span>
+              <button class="favorite-button${isFavorite ? ' is-favorite' : ''}" type="button" aria-label="${isFavorite ? 'Remove from favorites' : 'Add to favorites'}" title="${isFavorite ? 'Remove from favorites' : 'Add to favorites'}">${isFavorite ? '♥' : '♡'}</button>
               <a class="video-link" href="https://www.youtube.com/watch?v=${song.id}" target="_blank" rel="noopener" aria-label="${song.title}の元動画をYouTubeで開く">元動画</a>
             </div>
           `;
           item.onclick = () => playSong(song);
           item.querySelector('.video-link').onclick = event => event.stopPropagation();
+          item.querySelector('.favorite-button').onclick = event => {
+            event.stopPropagation();
+            toggleFavorite(song);
+          };
           listElement.appendChild(item);
         });
       }
 
-      // 6. 検索・絞り込み処理
-      function filterSongs() {
+      function renderCurrentSongs() {
         const searchText = document.getElementById('searchInput').value.toLowerCase();
         const selectedCat = document.getElementById('categorySelect').value;
         const selectedSubCat = document.getElementById('subCategorySelect').value;
-
         const filtered = songs.filter(song => {
-          const matchesSearch = song.title.toLowerCase().includes(searchText) ||
-                                song.originalArtist.toLowerCase().includes(searchText) ||
-                                song.singer.toLowerCase().includes(searchText);
+          const matchesSearch = song.title.toLowerCase().includes(searchText) || song.originalArtist.toLowerCase().includes(searchText) || song.singer.toLowerCase().includes(searchText);
           const matchesCat = selectedCat === 'ALL' || song.category === selectedCat;
           const matchesSubCat = selectedSubCat === 'ALL' || song.subCategory === selectedSubCat;
-
-          return matchesSearch && matchesCat && matchesSubCat;
+          const matchesFavorite = !favoritesOnly || favoriteKeys.has(songKey(song));
+          return matchesSearch && matchesCat && matchesSubCat && matchesFavorite;
         });
-
         filtered.sort((firstSong, secondSong) => firstSong.title.localeCompare(secondSong.title, 'ja', { sensitivity: 'base' }));
         renderSongs(filtered);
+      }
+
+      // 6. 検索・絞り込み処理
+      function filterSongs() {
+        renderCurrentSongs();
       }
 
       // 7. 大区分が変わった時に小区分を書き換える処理
@@ -331,6 +369,12 @@
         }
       });
       document.getElementById('forwardButton').addEventListener('click', () => seekSong(10));
+      document.getElementById('favoritesToggle').addEventListener('click', event => {
+        favoritesOnly = !favoritesOnly;
+        event.currentTarget.classList.toggle('is-active', favoritesOnly);
+        event.currentTarget.textContent = favoritesOnly ? '♥ Favorites' : '♡ Favorites';
+        renderCurrentSongs();
+      });
 
       function populateSubCategories() {
         const subSelect = document.getElementById('subCategorySelect');
@@ -345,7 +389,7 @@
       }
 
       populateSubCategories();
-      renderSongs(songs);
+      renderCurrentSongs();
     </script>
 </body>
 </html>
