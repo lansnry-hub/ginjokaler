@@ -134,27 +134,27 @@
   }
 
   /* 4. 曲库标题与搜索/筛选控制区 */
-  .library-heading {
-    margin-top: 32px;
-    display: block;
-  }
-
-  .library-heading h2 {
-    font-size: 24px;
-    margin-bottom: 6px;
-  }
-
   .controls {
     flex-direction: column; 
-    align-items: stretch; /* 恢复拉伸对齐，让横向宽度回到 100% */
+    align-items: stretch;
     gap: 8px;
   }
 
-  /* 搜索框与选择框：恢复 100% 宽度，垂直高度统一设置为 42px */
+  /* 强制锁定搜索框与下拉框的大小和内边距 */
   #searchInput, #categorySelect, #subCategorySelect, .favorites-toggle {
-    width: 100%;       /* 宽度恢复为跟原来一样宽 */
-    height: 24px;      /* 统一垂直长度/高度为 42px，与选择框完全一致 */
-    min-height: 24px;  
+    -webkit-appearance: none; /* 清除 iOS/Safari 默认的输入框臃肿外观 */
+    appearance: none;
+    width: 100%;
+    
+    /* 锁定高度与行高 */
+    height: 36px !important;     /* 如果觉得 42px 还是太高，这里可以直接改成 36px 或 32px */
+    min-height: 36px !important;
+    max-height: 36px !important;
+    line-height: 36px;
+    
+    /* 压缩内部上下间距，防止内边距把框撑大 */
+    padding: 0 12px !important;
+    font-size: 14px;
     box-sizing: border-box;
   }
 
