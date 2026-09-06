@@ -63,7 +63,16 @@
     width: calc(100% - 24px);
     padding: 16px 0 40px;
   }
-
+@media (max-width: 640px) {
+  /* 1. 调整背景 🍸 ✦ 图标在手机端的大小和透明度 */
+  body::before {
+    font-size: 48px;            /* 手机端缩小图标尺寸，防止过于抢眼或撑开页面 */
+    top: 12px;                  /* 距顶部位置微调 */
+    right: 4vw;                 /* 距右侧位置微调 */
+    letter-spacing: 10px;       /* 缩小字间距 */
+    color: rgba(214,183,101,0.18); /* 保留半透明效果（0.18 约等于 18% 不透明度） */
+  }
+}
   /* 2. 标头布局与字体微调 */
   .masthead {
     flex-direction: column;
