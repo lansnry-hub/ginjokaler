@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>Ginjoplayer | Music Room</title>
     <style>
@@ -55,7 +56,136 @@
         .favorite-button { width: 32px; height: 32px; padding: 0; color: var(--accent-bright); border: 1px solid var(--line); border-radius: 50%; background: transparent; cursor: pointer; font-size: 19px; line-height: 1; }
         .favorite-button.is-favorite { color: #ef5350; border-color: #ef5350; }
         .video-link { color: var(--accent); font-size: 12px; white-space: nowrap; }
-        @media (max-width: 640px) { .page-shell { width: min(100% - 24px, 1120px); padding-top: 18px; } .masthead, .library-heading { display: block; } .language-switcher { top: -4px; } .brand-note { margin-top: 14px; align-items: flex-start; text-align: left; } .player-card { padding: 12px; } .art-strip { padding: 15px; } .song-item { align-items: flex-start; } .song-actions { flex-wrap: wrap; justify-content: flex-end; } }
+        /* 针对手机移动端的优化排版 */
+@media (max-width: 640px) {
+  /* 1. 外层容器与边距调整 */
+  .page-shell {
+    width: calc(100% - 24px);
+    padding: 16px 0 40px;
+  }
+
+  /* 2. 标头布局与字体微调 */
+  .masthead {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 32px; /* 缩小大标题防换行挤压 */
+  }
+
+  .brand-note {
+    width: 100%;
+    height: auto;
+    align-items: flex-start;
+    text-align: left;
+    font-size: 12px;
+  }
+
+  .language-switcher {
+    top: 0;
+    right: 0;
+  }
+
+  /* 3. 播放卡片与控制条优化 */
+  .player-card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .art-strip {
+    padding: 12px;
+    min-height: 80px;
+  }
+
+  .art-strip strong {
+    font-size: 20px; /* 播放中的歌名缩小 */
+  }
+
+  .player-frame {
+    margin-top: 14px;
+    border-radius: 8px;
+  }
+
+  /* 控制按钮：放大触摸面积，防止手误 */
+  .player-controls {
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .player-controls button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .player-controls #playButton {
+    width: 54px;
+  }
+
+  /* 4. 曲库标题与搜索/筛选控制区（重点：改为竖排） */
+  .library-heading {
+    margin-top: 32px;
+    display: block;
+  }
+
+  .library-heading h2 {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+
+  .controls {
+    flex-direction: column; /* 搜索框与下拉菜单在手机上垂直排列 */
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  #searchInput, #categorySelect, #subCategorySelect, .favorites-toggle {
+    width: 100%; /* 全宽显示，单手更好点击 */
+    min-height: 44px; /* 符合手机触控标准的最小高度 */
+  }
+
+  /* 5. 曲目列表项移动端排版 */
+  .song-item {
+    flex-direction: column; /* 列表卡片变成上下两层 */
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .song-main {
+    width: 100%;
+  }
+
+  .song-thumbnail {
+    width: 72px;
+    height: 48px; /* 稍微缩小缩略图尺寸 */
+    margin-right: 10px;
+  }
+
+  .song-title {
+    font-size: 14px;
+  }
+
+  .song-meta {
+    font-size: 11px;
+  }
+
+  /* 标签与动作按钮放到底部一排 */
+  .song-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between; /* 均匀分布 */
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-top: 8px;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
     </style>
 </head>
 <body>
