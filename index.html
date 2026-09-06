@@ -135,15 +135,18 @@
     margin-bottom: 6px;
   }
 
+  /* 更改为居中对齐/控制元素宽度 */
   .controls {
-    flex-direction: column; /* 搜索框与下拉菜单在手机上垂直排列 */
-    align-items: stretch;
+    flex-direction: column; 
+    align-items: center; /* 居中显示，避免元素强制撑满横向空间 */
     gap: 8px;
   }
 
+  /* 将搜索框和选择框统一设置为相同的固定宽度（例如 280px，符合手机单手点击体验） */
   #searchInput, #categorySelect, #subCategorySelect, .favorites-toggle {
-    width: 100%; /* 全宽显示，单手更好点击 */
-    min-height: 44px; /* 符合手机触控标准的最小高度 */
+    width: min(280px, 100%); /* 最大宽度 280px，超小屏下自动适应 */
+    min-height: 44px; /* 符合触控标准的高度 */
+    box-sizing: border-box;
   }
 
   /* 5. 曲目列表项移动端排版 */
